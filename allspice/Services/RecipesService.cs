@@ -18,6 +18,7 @@ namespace allspice.Services
       return _recipesRepo.Get();
     }
 
+    // TODO change names of these functions
     internal Recipe Get(int id)
     {
       Recipe found = _recipesRepo.Get(id);

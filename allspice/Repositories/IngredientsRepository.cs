@@ -37,7 +37,16 @@ namespace allspice.Repositories
 
     internal Ingredient Create(Ingredient ingredientData)
     {
-      throw new NotImplementedException();
+      string sql = @"
+      INSERT INTO
+      ingredients (name, quantity, recipeId)
+      VALUES
+      (@Name, @Quantity, @RecipeId);
+      SELECT LAST_INSERT_ID();
+      ";
+      int id = _db.ExecuteScalar<int>(sql, ingredientData);
+      ingredientData.Id = id;
+      return ingredientData;
     }
 
     internal void Update(Ingredient original)
@@ -45,9 +54,17 @@ namespace allspice.Repositories
       throw new NotImplementedException();
     }
 
-    internal void Remove(int id)
+    internal string Remove(int id)
     {
-      throw new NotImplementedException();
+      string sql = @"
+        DELETE FROM ingredients WHERE id = @id LIMIT 1;
+      ";
+      int rowsAffected = _db.Execute(sql, new { id });
+      if (rowsAffected > 0)
+      {
+        return "delorted";
+      }
+      throw new Exception("could not delete");
     }
   }
 }

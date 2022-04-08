@@ -8,9 +8,11 @@ namespace allspice.Services
   public class IngredientsService
   {
     private readonly IngredientsRepository _ingredientsRepo;
-    public IngredientsService(IngredientsRepository ingredientsRepo)
+    private readonly RecipesService _recipesService;
+    public IngredientsService(IngredientsRepository ingredientsRepo, RecipesService recipesService)
     {
       _ingredientsRepo = ingredientsRepo;
+      _recipesService = recipesService;
     }
 
     internal List<Ingredient> Get()
@@ -18,9 +20,10 @@ namespace allspice.Services
       return _ingredientsRepo.Get();
     }
 
-    internal Ingredient Get(int id)
+    // Get all ingredients by recipe Id
+    internal Ingredient GetAll(int recipeId)
     {
-      Ingredient found = _ingredientsRepo.Get(id);
+      Ingredient found = _ingredientsRepo.Get(recipeId);
       if (found == null)
       {
         throw new Exception("Invalid Id");
@@ -28,22 +31,36 @@ namespace allspice.Services
       return found;
     }
 
-    internal Ingredient Create(Ingredient ingredientData)
+    // Create Ingredient on Recipe
+    internal Ingredient Create(Ingredient ingredientData, string userId)
     {
+      Recipe recipe = _recipesService.Get(ingredientData.RecipeId);
+      if (recipe.CreatorId != userId)
+      {
+        throw new Exception("Not your recipe bruv");
+      }
       return _ingredientsRepo.Create(ingredientData);
     }
+
+    // Edit Ingredient
     internal Ingredient Update(Ingredient ingredientData)
     {
-      Ingredient original = Get(ingredientData.Id);
+      Ingredient original = GetById(ingredientData.Id);
       original.Name = ingredientData.Name ?? original.Name;
       original.Quantity = ingredientData.Quantity ?? original.Quantity;
       _ingredientsRepo.Update(original);
       return original;
     }
 
+    private Ingredient GetById(int id)
+    {
+      throw new NotImplementedException();
+    }
+
+    // Delete Ingredient
     internal void Remove(int id)
     {
-      Get(id);
+      GetById(id);
       _ingredientsRepo.Remove(id);
     }
   }

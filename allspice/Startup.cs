@@ -35,8 +35,10 @@ namespace allspice
 
       services.AddScoped<AccountsRepository>();
       services.AddScoped<AccountService>();
-      services.AddScoped<RecipesRepository>();
-      services.AddScoped<RecipesService>();
+      services.AddTransient<RecipesRepository>();
+      services.AddTransient<RecipesService>();
+      services.AddTransient<IngredientsRepository>();
+      services.AddTransient<IngredientsService>();
 
     }
 

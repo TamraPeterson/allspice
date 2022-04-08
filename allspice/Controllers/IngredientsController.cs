@@ -1,7 +1,9 @@
 using System;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using allspice.Models;
 using allspice.Services;
+using CodeWorks.Auth0Provider;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace allspice.Controllers
@@ -16,40 +18,15 @@ namespace allspice.Controllers
       _ingredientsService = ingredientsService;
     }
 
-    [HttpGet]
-    public ActionResult<List<Ingredient>> Get()
-    {
-      try
-      {
-        List<Ingredient> ingredients = _ingredientsService.Get();
-        return Ok(ingredients);
-      }
-      catch (Exception e)
-      {
-        return BadRequest(e.Message);
-      }
-    }
-
-    [HttpGet("{id}")]
-    public ActionResult<Ingredient> Get(int id)
-    {
-      try
-      {
-        Ingredient ingredient = _ingredientsService.Get(id);
-        return Ok(ingredient);
-      }
-      catch (Exception e)
-      {
-        return BadRequest(e.Message);
-      }
-    }
-
+    // Create Ingredient
     [HttpPost]
-    public ActionResult<Ingredient> Create([FromBody] Ingredient ingredientData)
+    [Authorize]
+    public async Task<ActionResult<Ingredient>> Create([FromBody] Ingredient ingredientData)
     {
       try
       {
-        Ingredient ingredient = _ingredientsService.Create(ingredientData);
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        Ingredient ingredient = _ingredientsService.Create(ingredientData, userInfo.Id);
         return Created($"api/ingredients/{ingredient.Id}", ingredient);
       }
       catch (Exception e)
@@ -58,6 +35,7 @@ namespace allspice.Controllers
       }
     }
 
+    // Edit Ingredient 
     [HttpPut("{id}")]
     public ActionResult<Ingredient> Update(int id, [FromBody] Ingredient ingredientData)
     {
@@ -72,7 +50,7 @@ namespace allspice.Controllers
         return BadRequest(e.Message);
       }
     }
-
+    // Delete ingredient
     [HttpDelete("{id}")]
     public ActionResult<String> Remove(int id)
     {

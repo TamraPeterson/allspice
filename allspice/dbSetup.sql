@@ -24,9 +24,9 @@ INSERT INTO
   recipes (title, subtitle, category, creatorId)
 VALUES
   (
-    'Cheeseburger',
-    'and Fries',
-    'American',
+    'Sketti',
+    'meatballs',
+    'italian',
     '6234f2ff8e822c2a6080865b'
   );
 SELECT * FROM recipes;
@@ -57,11 +57,14 @@ INSERT INTO
   ingredients (name, quantity, recipeId)
 VALUES
   (
-    'Cheese',
-    2,
-    1
+    'Noodles',
+    75,
+    3
   );
   SELECT i.*, r.*
 FROM ingredients i
   JOIN recipes r
 WHERE r.id = i.recipeId;
+
+DELETE FROM ingredients
+WHERE id = 18 LIMIT 1;
