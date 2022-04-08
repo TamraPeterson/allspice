@@ -11,11 +11,15 @@ namespace allspice.Controllers
   public class RecipesController : ControllerBase
   {
     private readonly RecipesService _rs;
+    private readonly IngredientsService _ingredientsService;
+
     public RecipesController(RecipesService rs)
     {
       _rs = rs;
     }
 
+
+    //Get All Recipes
     [HttpGet]
     public ActionResult<List<Recipe>> Get()
     {
@@ -30,6 +34,7 @@ namespace allspice.Controllers
       }
     }
 
+    //Get Recipe by Id
     [HttpGet("{id}")]
     public ActionResult<Recipe> Get(int id)
     {
@@ -44,6 +49,7 @@ namespace allspice.Controllers
       }
     }
 
+    //Create Recipe
     [HttpPost]
     public ActionResult<Recipe> Create([FromBody] Recipe recipeData)
     {
@@ -58,21 +64,7 @@ namespace allspice.Controllers
       }
     }
 
-    [HttpPut("{id}")]
-    public ActionResult<Recipe> Update(int id, [FromBody] Recipe recipeData)
-    {
-      try
-      {
-        recipeData.Id = id;
-        Recipe recipe = _rs.Update(recipeData);
-        return Ok(recipe);
-      }
-      catch (Exception e)
-      {
-        return BadRequest(e.Message);
-      }
-    }
-
+    //Delete Recipe
     [HttpDelete("{id}")]
     public ActionResult<String> Remove(int id)
     {
@@ -87,7 +79,23 @@ namespace allspice.Controllers
       }
     }
 
+    // SECTION Ingredients
 
+    //Get ingredients by recipe id
+    [HttpGet("{id}/ingredients")]
+    public ActionResult<Ingredient> GetIngredientsByRecipeId(int id)
+    {
+      try
+      {
+        Ingredient ingredient = _ingredientsService.GetAll(id);
+        return Ok(ingredient);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+    // SECTION Steps
 
 
   }
