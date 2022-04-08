@@ -95,6 +95,38 @@ namespace allspice.Controllers
         return BadRequest(e.Message);
       }
     }
+
+    //Edit ingredients by recipe id
+    [HttpPut("{id}/ingredients")]
+    public ActionResult<Recipe> UpdateIngredientsByRecipeId(int id, [FromBody] Recipe recipeData)
+    {
+      try
+      {
+        recipeData.Id = id;
+        Recipe recipe = _rs.Update(recipeData);
+        return Ok(recipe);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+
+    // Create Ingredient on Recipe
+    [HttpPost("{id}/ingredients")]
+    public ActionResult<Ingredient> Create([FromBody] Ingredient ingredientData, int)
+    {
+      try
+      {
+        Ingredient ingredient = _ingredientsService.Create(ingredientData);
+        return Created($"api/{id}/{ingredient.Id}", ingredient);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+
     // SECTION Steps
 
 
