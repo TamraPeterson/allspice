@@ -34,9 +34,7 @@ namespace allspice.Repositories
     internal Recipe Get(int id)
     {
       string sql = @"
-  SELECT
-  r.*,
-  a.*
+  SELECT r.*, a.*
   FROM recipes r
   JOIN accounts a ON r.creatorId = a.id
   WHERE r.id = @id;

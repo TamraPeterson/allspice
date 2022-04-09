@@ -45,10 +45,14 @@ namespace allspice.Services
       return original;
     }
 
-    internal void Remove(int id)
+    internal string Remove(int id, Account user)
     {
-      Get(id);
-      _recipesRepo.Remove(id);
+      Recipe recipe = _recipesRepo.Get(id);
+      if (recipe.CreatorId != user.Id)
+      {
+        throw new Exception("not your recipe");
+      }
+      return _recipesRepo.Remove(id);
     }
   }
 }

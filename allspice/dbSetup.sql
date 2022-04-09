@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS accounts(
   email varchar(255) COMMENT 'User Email',
   picture varchar(255) COMMENT 'User Picture'
 ) default charset utf8 COMMENT '';
+
 CREATE TABLE IF NOT EXISTS recipes(
   id INT AUTO_INCREMENT primary key,
   title TEXT NOT NULL,
@@ -16,6 +17,23 @@ CREATE TABLE IF NOT EXISTS recipes(
   FOREIGN KEY(creatorID) REFERENCES accounts(id)
 ) default charset utf8 COMMENT '';
 
+CREATE TABLE IF NOT EXISTS ingredients(
+    id INT AUTO_INCREMENT primary key,
+    name TEXT NOT NULL,
+    quantity INT,
+    recipeId INT NOT NULL,
+    FOREIGN KEY(recipeId) REFERENCES recipes(id)
+  ) default charset utf8 COMMENT '';
+
+CREATE TABLE IF NOT EXISTS steps(
+    id INT AUTO_INCREMENT primary key,
+    position INT,
+    body TEXT,
+    recipeId INT NOT NULL,
+    FOREIGN KEY(recipeId) REFERENCES recipes(id)
+)   default charset utf8 COMMENT '';
+
+-- Recipes
 SELECT * FROM recipes;
 
 DROP TABLE recipes;
@@ -24,8 +42,8 @@ INSERT INTO
   recipes (title, subtitle, category, creatorId)
 VALUES
   (
-    'Sketti',
-    'meatballs',
+    'MomsSpaghetti',
+    'its on your sweater already',
     'italian',
     '6234f2ff8e822c2a6080865b'
   );
@@ -42,13 +60,7 @@ DELETE FROM recipes
 WHERE id = 18 LIMIT 1;
 
 
-CREATE TABLE IF NOT EXISTS ingredients(
-    id INT AUTO_INCREMENT primary key,
-    name TEXT NOT NULL,
-    quantity INT,
-    recipeId INT NOT NULL,
-    FOREIGN KEY(recipeId) REFERENCES recipes(id)
-  ) default charset utf8 COMMENT '';
+-- Ingredients
 
 SELECT * FROM ingredients;
 DROP TABLE ingredients;
@@ -57,9 +69,9 @@ INSERT INTO
   ingredients (name, quantity, recipeId)
 VALUES
   (
-    'Noodles',
-    75,
-    3
+    'Vomit',
+    2,
+    5
   );
   SELECT i.*, r.*
 FROM ingredients i
@@ -67,4 +79,29 @@ FROM ingredients i
 WHERE r.id = i.recipeId;
 
 DELETE FROM ingredients
+WHERE id = 18 LIMIT 1;
+
+-- Steps
+SELECT * FROM steps;
+
+DROP TABLE steps;
+
+INSERT INTO
+  steps (position, body, recipeId)
+VALUES
+  (
+    1,
+    "Boil the Noodles",
+    3
+  );
+  SELECT s.*, r.*
+FROM steps s
+  JOIN recipes r
+WHERE r.id = s.recipeId;
+
+
+            SELECT * FROM ingredients i
+            WHERE i.recipeId = 5;
+
+DELETE FROM steps
 WHERE id = 18 LIMIT 1;

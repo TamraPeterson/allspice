@@ -15,20 +15,16 @@ namespace allspice.Services
       _recipesService = recipesService;
     }
 
-    internal List<Ingredient> Get()
-    {
-      return _ingredientsRepo.Get();
-    }
+    // internal List<Ingredient> Get()
+    // {
+    //   return _ingredientsRepo.Get();
+    // }
 
     // Get all ingredients by recipe Id
-    internal Ingredient GetAll(int recipeId)
+    internal List<Ingredient> GetAll(int id)
     {
-      Ingredient found = _ingredientsRepo.Get(recipeId);
-      if (found == null)
-      {
-        throw new Exception("Invalid Id");
-      }
-      return found;
+      return _ingredientsRepo.GetAll(id);
+
     }
 
     // Create Ingredient on Recipe
@@ -62,6 +58,11 @@ namespace allspice.Services
     {
       GetById(id);
       _ingredientsRepo.Remove(id);
+    }
+
+    internal Ingredient Create(Ingredient ingredientData)
+    {
+      throw new NotImplementedException();
     }
   }
 }

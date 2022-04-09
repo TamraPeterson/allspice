@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using allspice.Services;
 using allspice.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
+using CodeWorks.Auth0Provider;
 
 namespace allspice.Controllers
 {
@@ -13,8 +16,9 @@ namespace allspice.Controllers
     private readonly RecipesService _rs;
     private readonly IngredientsService _ingredientsService;
 
-    public RecipesController(RecipesService rs)
+    public RecipesController(RecipesService rs, IngredientsService ingredientsService)
     {
+      _ingredientsService = ingredientsService;
       _rs = rs;
     }
 
@@ -66,12 +70,14 @@ namespace allspice.Controllers
 
     //Delete Recipe
     [HttpDelete("{id}")]
-    public ActionResult<String> Remove(int id)
+    [Authorize]
+    public async Task<ActionResult<String>> Remove(int id)
     {
       try
       {
-        _rs.Remove(id);
-        return Ok("Delorted ");
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+
+        return Ok(_rs.Remove(id, userInfo));
       }
       catch (Exception e)
       {
@@ -83,12 +89,12 @@ namespace allspice.Controllers
 
     //Get ingredients by recipe id
     [HttpGet("{id}/ingredients")]
-    public ActionResult<Ingredient> GetIngredientsByRecipeId(int id)
+    public ActionResult<List<Ingredient>> GetIngredientsByRecipeId(int id)
     {
       try
       {
-        Ingredient ingredient = _ingredientsService.GetAll(id);
-        return Ok(ingredient);
+        List<Ingredient> ingredients = _ingredientsService.GetAll(id);
+        return Ok(ingredients);
       }
       catch (Exception e)
       {
@@ -113,19 +119,21 @@ namespace allspice.Controllers
     }
 
     // Create Ingredient on Recipe
-    [HttpPost("{id}/ingredients")]
-    public ActionResult<Ingredient> Create([FromBody] Ingredient ingredientData, int)
-    {
-      try
-      {
-        Ingredient ingredient = _ingredientsService.Create(ingredientData);
-        return Created($"api/{id}/{ingredient.Id}", ingredient);
-      }
-      catch (Exception e)
-      {
-        return BadRequest(e.Message);
-      }
-    }
+    // [HttpPost("{id}/ingredients")]
+    // [Authorize]
+    // public async Task<ActionResult<Ingredient>> Create([FromBody] Ingredient ingredientData, string Id)
+    // {
+    //   try
+    //   {
+    //     Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+    //     Ingredient ingredient = _ingredientsService.Create(ingredientData, userInfo.Id);
+    //     return Ok(ingredient);
+    //   }
+    //   catch (Exception e)
+    //   {
+    //     return BadRequest(e.Message);
+    //   }
+    // }
 
     // SECTION Steps
 

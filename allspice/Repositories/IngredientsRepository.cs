@@ -16,44 +16,39 @@ namespace allspice.Repositories
     }
 
 
-    internal List<Ingredient> Get()
+
+    // Get all ingredients by recipeId
+    internal List<Ingredient> GetAll(int id)
     {
       string sql = @"
-            SELECT i.*, r.*
-            FROM ingredients i
-            JOIN recipes r WHERE r.id = i.RecipeId;
-            ";
-      return _db.Query<Ingredient, Recipe, Ingredient>(sql, (ingredient, recipe) =>
-      {
-        ingredient.RecipeId = recipe.Id;
-        return ingredient;
-      }).ToList();
+            SELECT * FROM ingredients i
+            WHERE i.recipeId = @id;";
+      return _db.Query<Ingredient>(sql, new { id }).ToList();
     }
 
-    internal Ingredient Get(int id)
-    {
-      throw new NotImplementedException();
-    }
 
+    // Create Ingredient
     internal Ingredient Create(Ingredient ingredientData)
     {
       string sql = @"
       INSERT INTO
       ingredients (name, quantity, recipeId)
       VALUES
-      (@Name, @Quantity, @RecipeId);
-      SELECT LAST_INSERT_ID();
-      ";
+      (@Name, @Quantity, @RecipeId);";
       int id = _db.ExecuteScalar<int>(sql, ingredientData);
       ingredientData.Id = id;
       return ingredientData;
     }
 
+
+    // Edit Ingredient
     internal void Update(Ingredient original)
     {
       throw new NotImplementedException();
     }
 
+
+    // Delete Ingredient
     internal string Remove(int id)
     {
       string sql = @"
