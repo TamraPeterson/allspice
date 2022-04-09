@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS recipes(
   category TEXT NOT NULL,
   image TEXT,
   creatorId VARCHAR(255) NOT NULL,
-  FOREIGN KEY(creatorID) REFERENCES accounts(id)
+  FOREIGN KEY(creatorId) REFERENCES accounts(id)
 ) default charset utf8 COMMENT '';
 
 CREATE TABLE IF NOT EXISTS ingredients(

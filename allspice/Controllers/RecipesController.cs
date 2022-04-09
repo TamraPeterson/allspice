@@ -25,11 +25,11 @@ namespace allspice.Controllers
 
     //Get All Recipes
     [HttpGet]
-    public ActionResult<List<Recipe>> Get()
+    public ActionResult<List<Recipe>> GetAll()
     {
       try
       {
-        List<Recipe> recipes = _rs.Get();
+        List<Recipe> recipes = _rs.GetAll();
         return Ok(recipes);
       }
       catch (Exception e)
@@ -40,11 +40,11 @@ namespace allspice.Controllers
 
     //Get Recipe by Id
     [HttpGet("{id}")]
-    public ActionResult<Recipe> Get(int id)
+    public ActionResult<Recipe> GetById(int id)
     {
       try
       {
-        Recipe recipe = _rs.Get(id);
+        Recipe recipe = _rs.GetById(id);
         return Ok(recipe);
       }
       catch (Exception e)
@@ -68,22 +68,41 @@ namespace allspice.Controllers
       }
     }
 
-    //Delete Recipe
-    [HttpDelete("{id}")]
+    //Edit recipe
+    [HttpPut("{id}")]
     [Authorize]
-    public async Task<ActionResult<String>> Remove(int id)
+    public async Task<ActionResult<Recipe>> Update([FromBody] Recipe recipeData, int id)
     {
       try
       {
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-
-        return Ok(_rs.Remove(id, userInfo));
+        recipeData.Id = id;
+        Recipe recipe = _rs.Update(recipeData, userInfo);
+        return Ok(recipe);
       }
       catch (Exception e)
       {
         return BadRequest(e.Message);
       }
     }
+
+    //Delete Recipe
+    [HttpDelete("{id}")]
+    [Authorize]
+    public async Task<ActionResult<string>> Remove(int id)
+    {
+      try
+      {
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        _rs.Remove(id, userInfo);
+        return Ok("delorted");
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+
 
     // SECTION Ingredients
 
@@ -102,21 +121,6 @@ namespace allspice.Controllers
       }
     }
 
-    //Edit ingredients by recipe id
-    [HttpPut("{id}/ingredients")]
-    public ActionResult<Recipe> UpdateIngredientsByRecipeId(int id, [FromBody] Recipe recipeData)
-    {
-      try
-      {
-        recipeData.Id = id;
-        Recipe recipe = _rs.Update(recipeData);
-        return Ok(recipe);
-      }
-      catch (Exception e)
-      {
-        return BadRequest(e.Message);
-      }
-    }
 
     // Create Ingredient on Recipe
     // [HttpPost("{id}/ingredients")]

@@ -26,6 +26,15 @@ namespace allspice.Repositories
       return _db.Query<Ingredient>(sql, new { id }).ToList();
     }
 
+    // Get ingredient by Id
+    internal Ingredient GetById(int id)
+    {
+      string sql = @"
+      SELECT * FROM ingredients 
+      WHERE id = @id;";
+      return _db.QueryFirstOrDefault<Ingredient>(sql, new { id });
+    }
+
 
     // Create Ingredient
     internal Ingredient Create(Ingredient ingredientData)
@@ -44,7 +53,14 @@ namespace allspice.Repositories
     // Edit Ingredient
     internal void Update(Ingredient original)
     {
-      throw new NotImplementedException();
+      string sql = @"
+      UPDATE ingredients
+      SET
+        name = @Name,
+        quantity = @Quantity,
+        recipeId = @RecipeId
+      WHERE id = @Id;";
+      _db.Execute(sql, original);
     }
 
 

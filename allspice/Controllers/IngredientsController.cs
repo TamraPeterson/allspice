@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace allspice.Controllers
 {
   [ApiController]
-  [Route("api/recipes/{recipeId}/[controller]")]
+  [Route("api/[controller]")]
   public class IngredientsController : ControllerBase
   {
     private readonly IngredientsService _ingredientsService;
@@ -17,6 +17,10 @@ namespace allspice.Controllers
     {
       _ingredientsService = ingredientsService;
     }
+
+
+    // [HtttpGet("{id}")]
+    // public ActionResult<List<Ingredient>> GetById(int id)
 
 
     // Create Ingredient
@@ -27,7 +31,7 @@ namespace allspice.Controllers
       try
       {
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-        Ingredient ingredient = _ingredientsService.Create(ingredientData, userInfo.Id);
+        Ingredient ingredient = _ingredientsService.Create(ingredientData, userInfo);
         return Ok(ingredient);
       }
       catch (Exception e)
@@ -53,11 +57,13 @@ namespace allspice.Controllers
     }
     // Delete ingredient
     [HttpDelete("{id}")]
-    public ActionResult<String> Remove(int id)
+    [Authorize]
+    public async Task<ActionResult<string>> Remove(int id)
     {
       try
       {
-        _ingredientsService.Remove(id);
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        _ingredientsService.Remove(userInfo, id);
         return Ok("Delorted ");
       }
       catch (Exception e)

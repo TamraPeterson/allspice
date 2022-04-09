@@ -15,7 +15,7 @@ namespace allspice.Repositories
       _db = db;
     }
 
-    internal List<Recipe> Get()
+    internal List<Recipe> GetAll()
     {
       string sql = @"
     SELECT r.*, a.*
@@ -31,7 +31,7 @@ namespace allspice.Repositories
 
 
 
-    internal Recipe Get(int id)
+    internal Recipe GetById(int id)
     {
       string sql = @"
   SELECT r.*, a.*
@@ -70,7 +70,8 @@ namespace allspice.Repositories
         title=@Title,
         subtitle=@Subtitle,
         category=@Category,
-        image=@Image;";
+        image=@Image
+        WHERE id = @Id;";
       _db.Execute(sql, original);
     }
 
@@ -84,7 +85,7 @@ namespace allspice.Repositories
       {
         return "delorted";
       }
-      throw new Exception("could not delete");
+      throw new Exception("Could not find recipe to delete");
     }
 
   }

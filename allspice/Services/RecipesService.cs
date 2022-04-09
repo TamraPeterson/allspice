@@ -13,15 +13,15 @@ namespace allspice.Services
       _recipesRepo = recipesRepo;
     }
 
-    internal List<Recipe> Get()
+    internal List<Recipe> GetAll()
     {
-      return _recipesRepo.Get();
+      return _recipesRepo.GetAll();
     }
 
     // TODO change names of these functions
-    internal Recipe Get(int id)
+    internal Recipe GetById(int id)
     {
-      Recipe found = _recipesRepo.Get(id);
+      Recipe found = _recipesRepo.GetById(id);
       if (found == null)
       {
         throw new Exception("Invalid Id");
@@ -34,9 +34,13 @@ namespace allspice.Services
       return _recipesRepo.Create(recipeData);
     }
 
-    internal Recipe Update(Recipe recipeData)
+    internal Recipe Update(Recipe recipeData, Account userInfo)
     {
-      Recipe original = Get(recipeData.Id);
+      Recipe original = GetById(recipeData.Id);
+      if (original.CreatorId != userInfo.Id)
+      {
+        throw new Exception("Not your recipe");
+      }
       original.Title = recipeData.Title ?? original.Title;
       original.Subtitle = recipeData.Subtitle ?? original.Subtitle;
       original.Category = recipeData.Category ?? original.Category;
@@ -45,10 +49,10 @@ namespace allspice.Services
       return original;
     }
 
-    internal string Remove(int id, Account user)
+    internal string Remove(int id, Account userInfo)
     {
-      Recipe recipe = _recipesRepo.Get(id);
-      if (recipe.CreatorId != user.Id)
+      Recipe recipe = _recipesRepo.GetById(id);
+      if (recipe.CreatorId != userInfo.Id)
       {
         throw new Exception("not your recipe");
       }

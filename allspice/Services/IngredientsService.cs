@@ -28,10 +28,10 @@ namespace allspice.Services
     }
 
     // Create Ingredient on Recipe
-    internal Ingredient Create(Ingredient ingredientData, string userId)
+    internal Ingredient Create(Ingredient ingredientData, Account userInfo)
     {
-      Recipe recipe = _recipesService.Get(ingredientData.RecipeId);
-      if (recipe.CreatorId != userId)
+      Recipe recipe = _recipesService.GetById(ingredientData.RecipeId);
+      if (recipe.CreatorId != userInfo.Id)
       {
         throw new Exception("Not your recipe bruv");
       }
@@ -54,10 +54,15 @@ namespace allspice.Services
     }
 
     // Delete Ingredient
-    internal void Remove(int id)
+    internal string Remove(Account userInfo, int id)
     {
-      GetById(id);
-      _ingredientsRepo.Remove(id);
+      Ingredient ingredient = _ingredientsRepo.GetById(id);
+      Recipe recipe = _recipesService.GetById(ingredient.RecipeId);
+      if (recipe.CreatorId != userInfo.Id)
+      {
+        throw new Exception("Not your recipe to edit");
+      }
+     return _ingredientsRepo.Remove(id);
     }
 
     internal Ingredient Create(Ingredient ingredientData)
