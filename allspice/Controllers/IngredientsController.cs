@@ -19,10 +19,6 @@ namespace allspice.Controllers
     }
 
 
-    // [HtttpGet("{id}")]
-    // public ActionResult<List<Ingredient>> GetById(int id)
-
-
     // Create Ingredient
     [HttpPost]
     [Authorize]
@@ -40,14 +36,18 @@ namespace allspice.Controllers
       }
     }
 
+
+    // TODO edit only works when user enters recipe id as part of the edit, otherwise it isn't able to get recipe by id to make the change in the service.
     // Edit Ingredient 
     [HttpPut("{id}")]
-    public ActionResult<Ingredient> Update(int id, [FromBody] Ingredient ingredientData)
+    [Authorize]
+    public async Task<ActionResult<Ingredient>> Update([FromBody] Ingredient ingredientData, int id)
     {
       try
       {
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
         ingredientData.Id = id;
-        Ingredient ingredient = _ingredientsService.Update(ingredientData);
+        Ingredient ingredient = _ingredientsService.Update(ingredientData, userInfo);
         return Ok(ingredient);
       }
       catch (Exception e)
@@ -63,8 +63,7 @@ namespace allspice.Controllers
       try
       {
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-        _ingredientsService.Remove(userInfo, id);
-        return Ok("Delorted ");
+        return Ok(_ingredientsService.Remove(userInfo, id));
       }
       catch (Exception e)
       {

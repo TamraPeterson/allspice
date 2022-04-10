@@ -9,8 +9,11 @@ namespace allspice.Models
     public string Image { get; set; }
     public string CreatorId { get; set; }
 
-
-
     public Account? Creator { get; set; }
+  }
+
+  public class FavoriteViewModel : Recipe
+  {
+    public int FavoriteId { get; set; }
   }
 }

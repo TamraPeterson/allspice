@@ -18,7 +18,6 @@ namespace allspice.Services
       return _recipesRepo.GetAll();
     }
 
-    // TODO change names of these functions
     internal Recipe GetById(int id)
     {
       Recipe found = _recipesRepo.GetById(id);
@@ -49,6 +48,7 @@ namespace allspice.Services
       return original;
     }
 
+
     internal string Remove(int id, Account userInfo)
     {
       Recipe recipe = _recipesRepo.GetById(id);
@@ -57,6 +57,13 @@ namespace allspice.Services
         throw new Exception("not your recipe");
       }
       return _recipesRepo.Remove(id);
+    }
+
+
+    // Get Favorites by Account
+    internal List<FavoriteViewModel> GetFavoritesByAccount(string id)
+    {
+      return _recipesRepo.GetFavoritesByAccount(id);
     }
   }
 }
