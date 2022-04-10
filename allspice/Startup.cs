@@ -41,6 +41,8 @@ namespace allspice
       services.AddTransient<IngredientsService>();
       services.AddTransient<FavoritesRepository>();
       services.AddTransient<FavoritesService>();
+      services.AddTransient<StepsRepository>();
+      services.AddTransient<StepsService>();
 
     }
 

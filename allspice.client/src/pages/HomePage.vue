@@ -1,10 +1,24 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <div class="home-card p-5 bg-white rounded elevation-3">
-      <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo" class="rounded-circle">
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Vue 3 Starter
-      </h1>
+  <div class="container-fluid image">
+    <div class="row justify-content-center">
+      <div class="col-md-2 shadow rounded bg-dark card p-3 m-5 selectable">
+        <img
+          class="recipeimg"
+          src="https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F9%2F2013%2F12%2F06%2F201304-xl-sauce-simmered-spaghetti-al-pomodoro-2000.jpg&q=60"
+          alt=""
+        />
+        <h3 class="text-center">Title</h3>
+        <h5 class="text-center">Subtitle</h5>
+      </div>
+      <div class="col-md-2 shadow rounded bg-dark card p-3 m-5 selectable">
+        <img
+          class="recipeimg"
+          src="https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F9%2F2013%2F12%2F06%2F201304-xl-sauce-simmered-spaghetti-al-pomodoro-2000.jpg&q=60"
+          alt=""
+        />
+        <h3 class="text-center">Title</h3>
+        <h5 class="text-center">Subtitle</h5>
+      </div>
     </div>
   </div>
 </template>
@@ -16,15 +30,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.home{
+.home {
   display: grid;
   height: 80vh;
   place-content: center;
   text-align: center;
   user-select: none;
-  .home-card{
+  .home-card {
     width: 50vw;
-    > img{
+    > img {
       height: 200px;
       max-width: 200px;
       width: 100%;
@@ -32,5 +46,18 @@ export default {
       object-position: center;
     }
   }
+}
+.image {
+}
+.card {
+  opacity: 0.9;
+  transition: 0.5s;
+}
+.card:hover {
+  transform: scale(1.05);
+  transition: 0.5s;
+}
+.recipeimg {
+  object-fit: cover;
 }
 </style>

@@ -55,7 +55,7 @@ VALUES
     'italian',
     '6234f2ff8e822c2a6080865b'
   );
-SELECT * FROM recipes;
+SELECT * FROM steps;
 
 
 SELECT r.*, a.*

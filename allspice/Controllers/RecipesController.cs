@@ -15,11 +15,14 @@ namespace allspice.Controllers
   {
     private readonly RecipesService _rs;
     private readonly IngredientsService _ingredientsService;
+    private readonly StepsService _ss;
 
-    public RecipesController(RecipesService rs, IngredientsService ingredientsService)
+
+    public RecipesController(RecipesService rs, IngredientsService ingredientsService, StepsService ss)
     {
       _ingredientsService = ingredientsService;
       _rs = rs;
+      _ss = ss;
     }
 
 
@@ -121,26 +124,20 @@ namespace allspice.Controllers
       }
     }
 
-
-    // Create Ingredient on Recipe
-    // [HttpPost("{id}/ingredients")]
-    // [Authorize]
-    // public async Task<ActionResult<Ingredient>> Create([FromBody] Ingredient ingredientData, string Id)
-    // {
-    //   try
-    //   {
-    //     Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-    //     Ingredient ingredient = _ingredientsService.Create(ingredientData, userInfo.Id);
-    //     return Ok(ingredient);
-    //   }
-    //   catch (Exception e)
-    //   {
-    //     return BadRequest(e.Message);
-    //   }
-    // }
-
     // SECTION Steps
-
-
+    // Get Steps by recipe Id
+    [HttpGet("{id}/steps")]
+    public ActionResult<List<Step>> GetStepsByRecipeId(int id)
+    {
+      try
+      {
+        List<Step> steps = _ss.GetAll(id);
+        return Ok(steps);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
   }
 }
