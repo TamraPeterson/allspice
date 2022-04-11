@@ -27,10 +27,10 @@
           class="custom-select rounded"
           id="recipe-category"
         >
-          <option value="appetizer">Appetizer</option>
-          <option value="dinner">Dinner</option>
-          <option value="dessert">Dessert</option>
-          <option value="soup">Soup</option>
+          <option value="Appetizers">Appetizer</option>
+          <option value="Dinners">Dinner</option>
+          <option value="Desserts">Dessert</option>
+          <option value="Soup">Soup</option>
         </select>
       </div>
 
@@ -44,15 +44,20 @@
         />
       </div>
 
-      <!-- <button
+      <button
         v-if="!recipeData.id"
         @click="createRecipe"
         type="submit"
         class="btn btn-success mt-3"
       >
         Create
-      </button> -->
-      <button @click="editRecipe" type="submit" class="btn btn-success mt-3">
+      </button>
+      <button
+        v-else
+        @click="editRecipe"
+        type="submit"
+        class="btn btn-success mt-3"
+      >
         Save Changes
       </button>
     </form>
@@ -99,7 +104,7 @@ export default {
       },
       async editRecipe() {
         try {
-          debugger
+
           await recipesService.update(editable.value);
           // editable.value = {}
           Modal.getOrCreateInstance(document.getElementById("form-modal")).hide();

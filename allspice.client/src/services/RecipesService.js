@@ -51,10 +51,13 @@ class RecipesService {
   }
 
   async create(recipeData) {
-    const res = await api.create('api/recipes', recipeData)
+    recipeData.creatorId = AppState.account.id
+    const res = await api.post('api/recipes', recipeData)
     logger.log('create recipe', res.data)
     AppState.recipes.push(res.data)
+    this.getAll()
     return res.data
+
   }
 
   async update(recipeData) {

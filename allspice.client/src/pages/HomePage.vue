@@ -63,10 +63,10 @@
     >
     <template #modal-body><RecipeDetails :key="activeRecipe.id" /></template>
   </Modal>
-  <Modal id="form-modal">
+  <CreateModal id="create-modal">
     <template #modal-title>Add a recipe:</template>
     <template #modal-body><RecipeForm :recipeData="recipe" /></template>
-  </Modal>
+  </CreateModal>
 </template>
 
 <script>
@@ -119,7 +119,7 @@ export default {
         recipesService.getAll()
       },
       openModal() {
-        Modal.getOrCreateInstance(document.getElementById("form-modal")).show();
+        Modal.getOrCreateInstance(document.getElementById("create-modal")).show();
       }
     }
   }

@@ -42,6 +42,7 @@ export default {
   setup() {
     return {
       recipes: computed(() => AppState.recipes)
+
     }
   }
 }
