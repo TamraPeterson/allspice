@@ -14,8 +14,11 @@ CREATE TABLE IF NOT EXISTS recipes(
   category TEXT NOT NULL,
   image TEXT,
   creatorId VARCHAR(255) NOT NULL,
-  FOREIGN KEY(creatorId) REFERENCES accounts(id)
+  FOREIGN KEY(creatorId) REFERENCES accounts(id)  
 ) default charset utf8 COMMENT '';
+
+ALTER TABLE recipes,
+ON DELETE CASCADE;
 
 CREATE TABLE IF NOT EXISTS ingredients(
     id INT AUTO_INCREMENT primary key,
@@ -25,6 +28,9 @@ CREATE TABLE IF NOT EXISTS ingredients(
     FOREIGN KEY(recipeId) REFERENCES recipes(id)
   ) default charset utf8 COMMENT '';
 
+ALTER TABLE ingredients
+DROP FOREIGN KEY recipeId;
+
 CREATE TABLE IF NOT EXISTS steps(
     id INT AUTO_INCREMENT primary key,
     position INT,
@@ -32,6 +38,9 @@ CREATE TABLE IF NOT EXISTS steps(
     recipeId INT NOT NULL,
     FOREIGN KEY(recipeId) REFERENCES recipes(id)
 )   default charset utf8 COMMENT '';
+
+ALTER TABLE steps
+DROP FOREIGN KEY recipeId 
 
 CREATE TABLE IF NOT EXISTS favorites(
   id INT AUTO_INCREMENT NOT NULL primary key,
@@ -47,12 +56,13 @@ SELECT * FROM recipes;
 DROP TABLE recipes;
 
 INSERT INTO
-  recipes (title, subtitle, category, creatorId)
+  recipes (title, subtitle, category, image, creatorId)
 VALUES
   (
-    'MomsSpaghetti',
-    'its on your sweater already',
-    'italian',
+    'Spaghet',
+  'a tasty meal',
+    'Dinner',
+    'https://www.cookingclassy.com/wp-content/uploads/2012/11/spaghetti+with+meat+sauce11.jpg',
     '6234f2ff8e822c2a6080865b'
   );
 SELECT * FROM steps;
@@ -65,7 +75,7 @@ WHERE a.id = r.creatorId;
 
 
 DELETE FROM recipes
-WHERE id = 18 LIMIT 1;
+WHERE id = 3 LIMIT 1;
 
 
 -- Ingredients

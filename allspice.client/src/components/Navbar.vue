@@ -1,7 +1,9 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark img px-3">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
-      <div class="d-flex flex-column align-items-center">AllSpice</div>
+      <div class="d-flex flex-column">
+        <h1 class="title ms-md-5 ms-4 mt-5 mt-md-4 text-white">All-Spice</h1>
+      </div>
     </router-link>
     <button
       class="navbar-toggler"
@@ -44,7 +46,13 @@ a:hover {
 }
 .img {
   background-image: url("https://images.unsplash.com/photo-1505935428862-770b6f24f629?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1167&q=80");
-  /* background-size: cover; */
-  height: 30vh;
+  background-size: cover;
+  height: 25vh;
+}
+.title {
+  font-family: "Courgette", cursive;
+  font-size: 4em;
+  text-shadow: 4px 4px 1px #373d41;
+  /* transform: translateX(160px); */
 }
 </style>
